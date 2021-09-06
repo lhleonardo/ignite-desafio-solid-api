@@ -19,7 +19,7 @@ class ShowUserProfileController {
     } catch (err) {
       const error = err as Error;
 
-      return response.status(404).json({ err: error.message });
+      return response.status(404).json({ error: error.message });
     }
   }
 }
