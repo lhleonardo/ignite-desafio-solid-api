@@ -6,10 +6,19 @@ interface IRequest {
 }
 
 class TurnUserAdminUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  private usersRepository: IUsersRepository;
+  constructor(usersRepository: IUsersRepository) {
+    this.usersRepository = usersRepository;
+  }
 
   execute({ user_id }: IRequest): User {
-    // Complete aqui
+    const userToPromoted = this.usersRepository.findById(user_id);
+
+    if (!userToPromoted) {
+      throw new Error("Invalid user_id provided");
+    }
+
+    return this.usersRepository.turnAdmin(userToPromoted);
   }
 }
 
