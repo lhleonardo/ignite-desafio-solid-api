@@ -7,10 +7,22 @@ interface IRequest {
 }
 
 class CreateUserUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  private usersRepository: IUsersRepository;
+
+  constructor(usersRepository: IUsersRepository) {
+    this.usersRepository = usersRepository;
+  }
 
   execute({ email, name }: IRequest): User {
-    // Complete aqui
+    const emailAlreadyInUse = this.usersRepository.findByEmail(email);
+
+    if (emailAlreadyInUse) {
+      throw new Error("O e-mail já está sendo utilizado");
+    }
+
+    const newUser = this.usersRepository.create({ name, email });
+
+    return newUser;
   }
 }
 
