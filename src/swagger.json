@@ -1,0 +1,324 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Desafio S.O.L.I.D API",
+        "description": "Documentação da API de usuários para o projeto de estudos de S.O.L.I.D.",
+        "version": "1.0.0",
+        "contact": {
+            "email": "lhleonardo05@gmail.com",
+            "name": "Leonardo Braz",
+            "url": "https://github.com/lhleonardo"
+        }
+    },
+    "tags": [
+        {
+            "name": "users",
+            "description": "Mantimento de usuários da aplicação"
+        }
+    ],
+    "paths": {
+        "/users": {
+            "get": {
+                "summary": "Lista usuários cadastrados",
+                "description": "Lista todos os usuários cadastrados para os administradores do sistema",
+                "tags": [
+                    "users"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "required": true,
+                        "name": "user_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "description": "Identificador do usuário"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "format": "email"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Adiciona usuários na aplicação",
+                "description": "Cria um novo usuário comum na aplicação",
+                "tags": [
+                    "users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "name": "John Doe",
+                                "email": "johndoe@example.com"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "id": "uuid",
+                                    "name": "John Doe",
+                                    "email": "johndoe@example.com",
+                                    "admin": false,
+                                    "created_at": "date-time",
+                                    "updated_at": "date-time"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "e-mail inválido": {
+                                        "description": "Foi informado um e-mail fora do formato válido",
+                                        "value": {
+                                            "error": "Invalid e-mail"
+                                        }
+                                    },
+                                    "e-mail duplicado": {
+                                        "description": "Esse e-mail já está em uso",
+                                        "value": {
+                                            "error": "E-mail already in use"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "summary": "Mostra informação de usuário",
+                "description": "Retorna os dados de um usuário cadastrado",
+                "tags": [
+                    "users"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK - Usuário retornado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "id": "uuid",
+                                    "name": "John Doe",
+                                    "email": "johndoe@example.com",
+                                    "admin": false,
+                                    "created_at": "date-time",
+                                    "updated_at": "date-time"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Usuário não existe"
+                    }
+                }
+            }
+        },
+        "/users/{user_id}/admin": {
+            "post": {
+                "summary": "Promover a admin",
+                "description": "Torna um usuário qualquer um administrador",
+                "tags": [
+                    "users"
+                ],
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID do usuário para ser um administrador",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK - tornou admin",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "id": "uuid",
+                                    "name": "John Doe",
+                                    "email": "johndoe@example.com",
+                                    "admin": true,
+                                    "created_at": "date-time",
+                                    "updated_at": "date-time"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Usuário não encontrado"
+                    }
+                }
+            }
+        }
+    }
+}
